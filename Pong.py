@@ -71,12 +71,12 @@ def detectKeys():
     if pressed[pygame.K_s]:
         move_up = False
         movePaddle(move_up, nonBackground_Squares[0])
-    if pressed[pygame.K_i]:
+    """if pressed[pygame.K_i]:
         move_up = True
         movePaddle(move_up, nonBackground_Squares[1])
     if pressed[pygame.K_k]:
         move_up = False
-        movePaddle(move_up, nonBackground_Squares[1])
+        movePaddle(move_up, nonBackground_Squares[1])"""
     if pressed[pygame.K_x]:
         nonBackground_Squares[len(nonBackground_Squares) -1].speedx \
         = random.randrange(-9,9)
@@ -116,6 +116,12 @@ def moveBall():
     ((nonBackground_Squares[len(nonBackground_Squares) - 1].speedx),\
     (nonBackground_Squares[len(nonBackground_Squares) - 1].speedy))
          
+    nonBackground_Squares[len(nonBackground_Squares) - 1].location[0]\
+    += nonBackground_Squares[len(nonBackground_Squares) - 1].speedx
+    
+    nonBackground_Squares[len(nonBackground_Squares) - 1].location[1]\
+    += nonBackground_Squares[len(nonBackground_Squares) - 1].speedy
+    
     #Check if the ball hits an object:
 
     if(nonBackground_Squares[len(nonBackground_Squares) - 1].rect.y <= 0):
@@ -186,6 +192,30 @@ def initlize():
     #A while loop to run the game, detect the inputs, and to call the draw function.
     while 1:
         detectKeys()
+        
+        #Some stitch-job for basic following
+        if(nonBackground_Squares[1].location[1] < nonBackground_Squares[2].location[1]):
+            if(nonBackground_Squares[2].location[1] - nonBackground_Squares[1].location[1] > 50):
+                nonBackground_Squares[1].moveRect(0,8)
+                nonBackground_Squares[1].location[1] += 8
+            elif(nonBackground_Squares[2].location[1] - nonBackground_Squares[1].location[1] < 20):
+                nonBackground_Squares[1].moveRect(0,1)
+                nonBackground_Squares[1].location[1] += 1
+            else:
+                nonBackground_Squares[1].moveRect(0,5)
+                nonBackground_Squares[1].location[1] += 5
+        elif(nonBackground_Squares[1].location[1] > nonBackground_Squares[2].location[1]):
+            if(nonBackground_Squares[1].location[1] - nonBackground_Squares[2].location[1] > 50):
+                nonBackground_Squares[1].moveRect(0,-8)
+                nonBackground_Squares[1].location[1] -= 8
+            elif(nonBackground_Squares[1].location[1] - nonBackground_Squares[2].location[1] < 20):
+                nonBackground_Squares[1].moveRect(0,-1)
+                nonBackground_Squares[1].location[1] -= 1
+            else:
+                nonBackground_Squares[1].moveRect(0,-5)
+                nonBackground_Squares[1].location[1] -= 5
+        
+        
         temp = moveBall()
         if(temp == 1):
             scoreP2 += 1
